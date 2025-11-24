@@ -3,20 +3,26 @@ document.addEventListener("DOMContentLoaded", () => {
     const nextButton = document.querySelector(".next");
     const prevButton = document.querySelector(".prev");
 
+    const rootStyles = getComputedStyle(document.documentElement);
+    const frontDepth = rootStyles.getPropertyValue("--front-depth").trim();
+    const sideOffset = rootStyles.getPropertyValue("--side-offset").trim();
+    const sideDepth = rootStyles.getPropertyValue("--side-depth").trim();
+
     let currentIndex = 0;
 
     function updateCarousel() {
         items.forEach((item, index) => {
             item.classList.remove("active");
+
             if (index === currentIndex) {
                 item.classList.add("active");
-                item.style.transform = `translateZ(300px)`;
+                item.style.transform = `translateZ(${frontDepth})`;
             } else if (index === (currentIndex + 1) % items.length) {
-                item.style.transform = `translateX(300px) translateZ(100px)`;
+                item.style.transform = `translateX(${sideOffset}) translateZ(${sideDepth})`;
             } else if (index === (currentIndex - 1 + items.length) % items.length) {
-                item.style.transform = `translateX(-300px) translateZ(100px)`;
+                item.style.transform = `translateX(-${sideOffset}) translateZ(${sideDepth})`;
             } else {
-                item.style.transform = `translateZ(-300px)`;
+                item.style.transform = `translateZ(calc(${sideDepth} * -1))`;
             }
         });
     }
